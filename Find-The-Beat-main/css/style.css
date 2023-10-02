@@ -1,0 +1,486 @@
+:root {
+	--main: rgb(0, 255, 34);
+	--sub-btn: #00a7fc;
+}
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+body {
+	font-family: "Metal Mania", cursive;
+	background: center / cover no-repeat url("../assets/images/apocal-drum.jfif");
+	color: var(--main);
+	font-size: 22px;
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+}
+h1 {
+	padding: 30px 0;
+	font-size: 40px;
+	letter-spacing: 4px;
+	text-align: center;
+}
+main {
+	letter-spacing: 2px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+#game-container {
+	position: relative;
+	width: 1000px;
+	height: 600px;
+	background-color: rgba(26, 23, 23, 0.8);
+	border-radius: 20px;
+	box-shadow: var(--main);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-around;
+}
+
+/* Visibility */
+
+#menu, #countdown-container {
+	position: absolute;
+	width: 100%;
+	height: 100vh;
+	display: flex;
+	text-align: center;
+	justify-content: center;
+	align-items: center;
+	gap: 20px;
+	z-index: 99;
+	background-color: #001d1ced;
+}
+#countdown-container{
+	padding-top: 20%;
+}
+#countdown-container {
+    display: none;
+}
+
+#countdown {
+	font-size: 100px;
+}
+
+#start-btn {
+	position: absolute;
+	top: 10px;
+	left: 10px;
+}
+
+
+.info {
+	margin-top: 40px;
+}
+.info,
+.btns {
+	display: flex;
+	width: 70%;
+	justify-content: space-between;
+}
+
+.grid-container {
+	display: flex;
+	justify-content: center;
+	width: 100%;
+	gap: 20px;
+}
+.grid-3 {
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	gap: 5px;
+	margin-bottom: 20px;
+}
+
+.cell {
+	border-radius: 5px;
+	border: 2px solid rgba(0, 255, 34, 0.212);
+	height: 70px;
+	width: 70px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.left-grid p,
+.right-grid p {
+	width: 80px;
+}
+
+.cell {
+	border-radius: 5px;
+	border: 2px solid rgba(0, 255, 34, 0.212);
+	height: 60px;
+	width: 60px;
+	text-align: center;
+}
+
+.controllers {
+	display: flex;
+	justify-content: space-between;
+}
+
+.info {
+	display: flex;
+	gap: 20px;
+}
+
+/* Modal */
+
+.modal-open,
+.fa-solid {
+	display: inline-block;
+	cursor: pointer;
+	color: var(--main);
+	padding: 0.8rem;
+	text-align: center;
+	text-transform: uppercase;
+	font-size: 1.3rem;
+}
+.modal-open:hover {
+	color: var(--sub-btn);
+}
+
+.modal-open::after {
+	content: "";
+	display: block;
+	width: 0;
+	margin-top: 5px;
+	border-bottom: 2px solid var(--sub-btn);
+	transition: width 0.3s;
+}
+
+.modal-open:hover::after {
+	width: 100%;
+	transition: width 0.3s;
+}
+
+.modal-wrapper {
+	opacity: 0;
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 100vh;
+	width: 100vw;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: #001d1ca4;
+	pointer-events: none;
+	transition: opacity 0.4s ease-out;
+}
+.modal-wrapper.show {
+	opacity: 1;
+	z-index: 999;
+	pointer-events: auto;
+}
+.modal {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+	background-color: rgba(26, 23, 23, 0.793);
+	width: 800px;
+	max-width: 95%;
+	padding: 3rem 1rem;
+	line-height: 1.4;
+	border-radius: 15px;
+}
+.modal ul {
+	padding: 1rem;
+}
+.modal span {
+	font-weight: 600;
+}
+.modal-close {
+	color: rgb(0, 255, 34);
+	position: absolute;
+	top: 0;
+	right: 0;
+}
+
+footer {
+	margin-top: auto;
+	width: 100%;
+	text-align: center;
+}
+
+/* BUTTONS EFECT */
+
+.btn-21 {
+	cursor: pointer;
+	letter-spacing: 2px;
+	text-transform: uppercase;
+	font-family: "Metal Mania", cursive;
+	font-size: 20px;
+	width: 200px;
+	height: 45px;
+	position: relative;
+	color: var(--main);
+	z-index: 1;
+	transition: all 0.5s ease-in-out;
+	border-radius: 0px;
+	background: transparent;
+	padding: 0;
+	overflow: hidden;
+	border: none;
+}
+
+.btn-21:before {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 2px;
+	background: linear-gradient(to right, transparent, var(--main));
+	animation: btn-21-right 2s linear infinite;
+	transition: 0.5s ease-in-out;
+}
+
+.btn-21:after {
+	content: "";
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 2px;
+	height: 100%;
+	background: linear-gradient(to bottom, transparent, var(--main));
+	animation: btn-21-bottom 2s linear infinite;
+	animation-delay: 1s;
+	transform: translateY(-100%);
+}
+
+.btn-21 span {
+	position: relative;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	height: 100%;
+	padding: 4px;
+}
+
+.btn-21 span:after {
+	content: "";
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height: 2px;
+	background: linear-gradient(to left, transparent, var(--main));
+	animation: btn-21-left 2s linear infinite;
+}
+
+.btn-21 span:before {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 2px;
+	height: 100%;
+	background: linear-gradient(to top, transparent, var(--main));
+	animation: btn-21-top 2s linear infinite;
+	animation-delay: 1s;
+	transform: translateY(-100%);
+}
+
+.btn-21:hover:before {
+	background: linear-gradient(to right, transparent, var(--sub-btn));
+}
+
+.btn-21:hover:after {
+	background: linear-gradient(to bottom, transparent, var(--sub-btn));
+}
+
+.btn-21 span:hover:before {
+	background: linear-gradient(to top, transparent, var(--sub-btn));
+}
+
+.btn-21 span:hover:after {
+	background: linear-gradient(to left, transparent, var(--sub-btn));
+}
+
+.btn-21:hover {
+	color: var(--sub-btn);
+}
+
+.btn-21:active:before {
+	background: linear-gradient(to right, transparent, var(--main));
+}
+
+.btn-21:active:after {
+	background: linear-gradient(to bottom, transparent, var(--main));
+}
+
+.btn-21 span:active:before {
+	background: linear-gradient(to top, transparent, var(--main));
+}
+
+.btn-21 span:active:after {
+	background: linear-gradient(to left, transparent, var(--main));
+}
+
+.btn-21:active {
+	color: var(--main);
+}
+
+@keyframes btn-21-right {
+	0% {
+		transform: translateX(-100%);
+	}
+
+	100% {
+		transform: translateX(100%);
+	}
+}
+
+@keyframes btn-21-top {
+	0% {
+		transform: translateY(100%);
+	}
+
+	100% {
+		transform: translateY(-100%);
+	}
+}
+
+@keyframes btn-21-left {
+	0% {
+		transform: translateX(100%);
+	}
+
+	100% {
+		transform: translateX(-100%);
+	}
+}
+
+@keyframes btn-21-bottom {
+	0% {
+		transform: translateY(-100%);
+	}
+
+	100% {
+		transform: translateY(100%);
+	}
+}
+
+.btn-21:focus {
+	outline: none;
+}
+
+/* Media querys */
+
+@media screen and (max-width: 1000px) {
+	#game-container {
+		width: 100%;
+	}
+}
+@media screen and (max-width: 640px) {
+	#start-btn {
+		width: 95%;
+		margin: 0 auto;
+	}
+	.info {
+		padding-top: 30px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+
+	.btns {
+		align-items: center;
+		flex-direction: column;
+	}
+	.modal-open {
+		margin: 20px 0;
+	}
+	.left-grid .grid-3 p {
+		transform: rotate(90deg);
+		margin-top: 20px;
+		margin-right: -30px;
+	}
+	.right-grid .grid-3 p {
+		transform: rotate(90deg);
+		margin-top: 20px;
+		margin-left: -30px;
+	}
+	footer {
+		
+		margin-top: auto;
+		font-size: 14px;
+	}
+}
+
+@media screen and (max-width: 500px) {
+	h1 {
+		padding: 10px;
+		font-size: 24px;
+	}
+	main {
+		font-size: 16px;
+	}
+	.grid-container {
+		gap: 5px;
+	}
+	.cell {
+		height: 50px;
+		width: 50px;
+	}
+}
+
+@media screen and (max-width: 440px) {
+	.cell {
+		height: 35px;
+		width: 35px;
+	}
+	.left-grid .grid-3 p {
+		margin-top: 40px;
+		margin-right: -30px;
+		font-size: 10px;
+	}
+	.right-grid .grid-3 p {
+		margin-top: 40px;
+		margin-left: -30px;
+		font-size: 10px;
+}
+.btn-21 {	
+	font-size: 16px;
+	width: 160px;
+	height: 35px;
+	
+}
+}
+
+@media only screen 
+and (max-device-width : 1150px) 
+and (orientation : landscape){
+	.title{
+		padding: 10px;
+		font-size:18px;
+	}
+	.info{
+		margin-top: 80px;
+		padding-bottom: 15px;
+	}
+	#game-container {
+		
+		justify-content: flex-start;
+	}
+}
+.cell {
+    cursor: pointer;
+}
+.cell:hover{
+    background-color: var(--main);
+    color:  black;
+}

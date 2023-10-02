@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Metal+Mania&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./css/style.css">
+    <script src="https://kit.fontawesome.com/0d6dd7f645.js" crossorigin="anonymous"></script>
+    <title>Find The Beat</title>
+</head>
+
+<body>
+    <div id="menu">
+        <button id="start-game-btn" class="btn-21">
+            <span>Start Game</span>
+        </button>
+        <button class="menu-instructions btn-21">
+            <span class="modal-open">Instructions</span>
+        </button>
+    </div>
+    <div id="countdown-container">
+        <div id="countdown"></div>
+    </div>
+    <main>
+        <h1 class="title">Find The Beat</h1>
+        <section id="game-container">
+            <!-- <button class="Instructions">
+                <span>Start</span>
+            </button> -->
+
+            <div class="info">
+                <span id="score">Score :</span>
+                <span id="timer">Timer :</span>
+                <span id="lives">Lives :</span>
+            </div>
+
+            <div class="grid-container">
+                <div class="left-grid">
+                    <div class="grid-3">
+                        <p>Drums</p>
+                        <div class="cell">1
+                            <audio class="sound" src="assets/Sound-Kits/drums/UK_KICK-flat.WAV"></audio>
+                        </div>
+                        <div class="cell">2
+                            <audio class="sound" src="assets/Sound-Kits/drums/UK_KICK-gated.WAV"></audio>
+                        </div>
+                        <div class="cell">3
+                            <audio class="sound" src="assets/Sound-Kits/drums/UK_TOM-low.WAV"></audio>
+                        </div>
+                    </div>
+                    <div class="grid-3">
+                        <p>Snare</p>
+                        <div class="cell">4
+                            <audio class="sound" src="assets/Sound-Kits/Snares/snare-1.wav"></audio>
+                        </div>
+                        <div class="cell">5
+                            <audio class="sound" src="assets/Sound-Kits/Snares/snare-2.wav"></audio>
+                        </div>
+                        <div class="cell">6
+                            <audio class="sound" src="assets/Sound-Kits/Snares/snare-3.wav"></audio>
+                        </div>
+                    </div>
+                </div>
+                <div class="right-grid">
+                    <div class="grid-3">
+                        <div class="cell">7
+                            <audio class="sound" src="assets/Sound-Kits/cymbal/curiouscym1.wav"></audio>
+                        </div>
+                        <div class="cell">8
+                            <audio class="sound" src="assets/Sound-Kits/cymbal/grungecymbal.wav"></audio>
+                        </div>
+                        <div class="cell">9
+                            <audio class="sound" src="assets/Sound-Kits/cymbal/thin-splash.wav"></audio>
+                        </div>
+                        <p>Cymbal</p>
+                    </div>
+                    <div class="grid-3">
+                        <div class="cell">10
+                            <audio class="sound" src="assets/Sound-Kits/beats/808sub.wav"></audio>
+                        </div>
+                        <div class="cell">11
+                            <audio class="sound" src="assets/Sound-Kits/beats/beautybass.wav"></audio>
+                        </div>
+                        <div class="cell">12
+                            <audio class="sound" src="assets/Sound-Kits/beats/dancekick.wav"></audio>
+                        </div>
+                        <p>Beat</p>
+                    </div>
+                </div>
+            </div>
+            <div class="btns">
+                <button id="level" class="btn-21">
+                    <span>Levels</span>
+                </button>
+                <span class="modal-open">Instructions</span>
+                <div class="modal-wrapper">
+                    <div class="modal">
+                        <span>Instructions:</span>
+                        <ul>
+                            <li>Press Start Game to begin.</li>
+                            <li>There will be a random 7-sequence beat scattered around the board's instrumments.</li>
+                            <li>You will then be given 3 seconds to memorise the  beat/locations of the sounds.</li>
+                            <li>Select all the correct instrumments in the correct order to earn 1 point.</li>
+                            <li>If you fail to select atleast 1 sound you will lose 1 Life.</li>
+                            <li>If any beat is missed you will lose 1 Life.</li> 
+                            <li>If the sequence is not correct you will lose 1 Life.</li> 
+                            <li>You will then be given a new sequance in the next round.</li>
+                            
+                        </ul>
+                        <i class="fa-solid fa-xmark modal-close"></i>
+                    </div>
+                </div>
+                <button id="reset" class="btn-21">
+                    <span>Reset</span>
+                </button>
+            </div>
+        </section>
+    </main>
+    <footer><span class="date"></span> &copy; 404 STRINGERS</footer>
+    <script src="./js/app.js"></script>
+</body>
+
+</html>
