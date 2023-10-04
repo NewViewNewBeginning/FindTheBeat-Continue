@@ -21,11 +21,10 @@ document
 
 // !!!!!!!Game code below!!!!!!!!!!
 
+// Element Selectors
 const menu = document.querySelector("#menu");
 const countdown = document.querySelector("#countdown-container");
-const game = document.querySelector("#game");
 const startGameBtn = document.querySelector("#start-game-btn");
-// const startBtn = document.querySelector('#start-btn');
 const levelBtn = document.querySelector("#level");
 const resetBtn = document.querySelector("#reset");
 const score = document.querySelector("#score");
@@ -35,17 +34,20 @@ const countdownTimer = document.querySelector("#countdown");
 const soundsPlayer = document.querySelectorAll(".sound");
 const pads = document.querySelectorAll(".cell");
 
+// Initial Settings
 score.textContent = "Score = 0";
 timer.textContent = "Time = 00:00:00";
 lives.textContent = "Lives = 5";
 
 let currentScore = 0;
 let currentLives = 5;
-
 let count = 3;
 let gameArray = [];
 let userArray = [];
+let level = 1;
+let soundDelay = 1000;
 
+// Functions
 function validateUserInput() {
 	for (let i = 0; i < gameArray.length; i++) {
 		if (gameArray[i] !== userArray[i]) {
@@ -62,140 +64,58 @@ function handleSequenceCompletion() {
 	} else {
 		currentLives--;
 		lives.textContent = "Lives = " + currentLives;
-
 		if (currentLives <= 0) {
-			endGame(); // You will need to implement this later
+			endGame();
 		}
 	}
 	nextSequence();
 }
 
-function getUserArray(event) {
-	const currentPad = event.currentTarget;
-	userClick = currentPad.innerText;
-	userArray.push(+userClick);
-
-	if (userArray.length >= 7) {
-		handleSequenceCompletion();
-	}
-}
-
-function nextSequence() {
-	userArray = [];
-	gameArray = [];
-	createGameArray();
-	// Optionally add delay or effects before starting a new sequence.
-}
-
 function endGame() {
-	// Logic to end the game, like showing an end screen or resetting the game.
 	alert("Game Over! Your score is: " + currentScore);
-	location.reload(); // This will refresh the page. Consider a better approach, like resetting game variables and UI.
+	location.reload();
 }
 
-resetBtn.addEventListener("click", function () {
-	userArray = [];
-	nextSequence();
-});
+function playGameSequence() {
+	let index = 0;
+	const interval = setInterval(function () {
+		if (index === gameArray.length) {
+			clearInterval(interval);
+			return;
+		}
 
-let level = 1;
-let soundDelay = 1000; // 1 second for simplicity. Adjust accordingly.
+		let padIndex = gameArray[index] - 1;
 
-levelBtn.addEventListener("click", function () {
-	level++;
-	soundDelay *= 0.9; // Reduces delay by 10%.
-});
+		if (padIndex >= 0 && padIndex < pads.length) {
+			pads[padIndex].classList.add("active");
+			soundsPlayer[padIndex].play();
 
-function getUserArray(event) {
-	const currentPad = event.currentTarget;
-	userClick = currentPad.innerText;
+			setTimeout(() => {
+				if (padIndex >= 0 && padIndex < pads.length) {
+					// Adding this check for safety
+					pads[padIndex].classList.remove("active");
+				}
+			}, soundDelay / 2);
+		}
 
-	if (userArray.length < 7) {
-		userArray.push(+userClick);
-	} else {
-	}
-}
-
-function setPadListener() {
-	pads.forEach(function (pad) {
-		pad.addEventListener("click", getUserArray);
-	});
+		index++;
+	}, soundDelay);
 }
 
 function createGameArray() {
-	for (i = 0; i < 7; i++) {
+	for (let i = 0; i < 7; i++) {
 		let soundNum = Math.trunc(Math.random() * 12) + 1;
 		gameArray.push(soundNum);
 	}
 }
 
-function endCountdown() {
-	countdown.style.display = "none";
-	menu.style.display = "none";
-	/*game.style.display = "block";*/
-}
-
-function handleCountdownTimer() {
-	if (count === 0) {
-		clearInterval(timer);
-		endCountdown();
-	} else {
-		countdownTimer.innerText = count;
-		count--;
-	}
-}
-
-function startCountdownTimer() {
-	setInterval(function () {
-		handleCountdownTimer(count);
-	}, 1000);
-}
-
-function startGame() {
-	startCountdownTimer();
-	createGameArray();
-	setPadListener();
-}
-
-// Event Listeners
-startGameBtn.addEventListener("click", function () {
-	// menu.style.display = 'none';
-	countdown.style.display = "block";
-	// game.style.display = 'none';
-	startGame();
-});
-
-// load sounds for the pads
-window.addEventListener("load", () => {
-	pads.forEach((pad, index) => {
-		pad.addEventListener("click", function () {
-			soundsPlayer[index].currentTime = 0;
-			soundsPlayer[index].play();
-		});
-	});
-});
-
-function playGameSequence() {
-	let index = 0;
-	const interval = setInterval(function () {
-		pads[gameArray[index] - 1].classList.add("active"); // Assuming 'active' class changes appearance.
-		soundsPlayer[gameArray[index] - 1].play();
-		setTimeout(() => {
-			pads[gameArray[index] - 1].classList.remove("active");
-		}, soundDelay / 2); // Half of delay for deactivating.
-
-		index++;
-		if (index === gameArray.length) {
-			clearInterval(interval);
-		}
-	}, soundDelay);
-}
 function nextSequence() {
 	userArray = [];
 	gameArray = [];
 	createGameArray();
 	playGameSequence();
 }
+
 function initializeGame() {
 	currentScore = 0;
 	currentLives = 5;
@@ -203,10 +123,66 @@ function initializeGame() {
 	soundDelay = 1000;
 	score.textContent = "Score = " + currentScore;
 	lives.textContent = "Lives = " + currentLives;
-	// Any other initialization if needed.
 }
-function startGame() {
-	initializeGame();
+
+function getUserArray(event) {
+	const currentPad = event.currentTarget;
+	const userClick = currentPad.innerText;
+	if (userArray.length < 7) {
+		userArray.push(+userClick);
+	}
+	if (userArray.length === 7) {
+		handleSequenceCompletion();
+	}
+}
+
+function startCountdownTimer() {
+	const interval = setInterval(function () {
+		if (count === 0) {
+			clearInterval(interval);
+			countdown.style.display = "none"; // Hide countdown
+			menu.style.display = "none"; // Hide menu
+			// Add logic to show the game area, if it's hidden
+			nextSequence();
+		} else {
+			countdownTimer.innerText = count;
+			count--;
+		}
+	}, 1000);
+}
+
+function setPadListener() {
+	pads.forEach(pad => {
+		pad.addEventListener("click", getUserArray);
+	});
+}
+
+// Event Listeners
+startGameBtn.addEventListener("click", () => {
+	countdown.style.display = "block";
 	startCountdownTimer();
+});
+
+resetBtn.addEventListener("click", () => {
+	userArray = [];
 	nextSequence();
-}
+});
+
+levelBtn.addEventListener("click", () => {
+	level++;
+	soundDelay *= 0.9;
+});
+
+window.addEventListener("load", () => {
+	pads.forEach((pad, index) => {
+		pad.addEventListener("click", () => {
+			soundsPlayer[index].currentTime = 0;
+			soundsPlayer[index].play();
+		});
+	});
+
+	// Preload sounds
+	soundsPlayer.forEach(sound => {
+		sound.load();
+	});
+});
