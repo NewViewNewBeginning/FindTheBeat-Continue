@@ -46,7 +46,8 @@ main {
 
 /* Visibility */
 
-#menu, #countdown-container {
+#menu,
+#countdown-container {
 	position: absolute;
 	width: 100%;
 	height: 100vh;
@@ -58,11 +59,11 @@ main {
 	z-index: 99;
 	background-color: #001d1ced;
 }
-#countdown-container{
+#countdown-container {
 	padding-top: 20%;
 }
 #countdown-container {
-    display: none;
+	display: none;
 }
 
 #countdown {
@@ -74,7 +75,6 @@ main {
 	top: 10px;
 	left: 10px;
 }
-
 
 .info {
 	margin-top: 40px;
@@ -401,9 +401,9 @@ footer {
 		align-items: center;
 		flex-direction: column;
 	}
-	.modal-open {
+	/* .modal-open {
 		margin: 20px 0;
-	}
+	} */
 	.left-grid .grid-3 p {
 		transform: rotate(90deg);
 		margin-top: 20px;
@@ -415,7 +415,6 @@ footer {
 		margin-left: -30px;
 	}
 	footer {
-		
 		margin-top: auto;
 		font-size: 14px;
 	}
@@ -452,35 +451,35 @@ footer {
 		margin-top: 40px;
 		margin-left: -30px;
 		font-size: 10px;
-}
-.btn-21 {	
-	font-size: 16px;
-	width: 160px;
-	height: 35px;
-	
-}
+	}
+	.btn-21,
+	.modal-open {
+		font-size: 14px;
+		width: 160px;
+		height: 35px;
+	}
+	#menu {
+		flex-direction: column;
+	}
 }
 
-@media only screen 
-and (max-device-width : 1150px) 
-and (orientation : landscape){
-	.title{
+@media only screen and (max-device-width: 1150px) and (orientation: landscape) {
+	.title {
 		padding: 10px;
-		font-size:18px;
+		font-size: 18px;
 	}
-	.info{
+	.info {
 		margin-top: 80px;
 		padding-bottom: 15px;
 	}
 	#game-container {
-		
 		justify-content: flex-start;
 	}
 }
 .cell {
-    cursor: pointer;
+	cursor: pointer;
 }
-.cell:hover{
-    background-color: var(--main);
-    color:  black;
+.cell:hover {
+	background-color: var(--main);
+	color: black;
 }
