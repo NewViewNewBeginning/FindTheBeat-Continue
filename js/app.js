@@ -21,7 +21,6 @@ document
 
 // !!!!!!!Game code below!!!!!!!!!!
 
-// Element Selectors
 const menu = document.querySelector("#menu");
 const countdown = document.querySelector("#countdown-container");
 const startGameBtn = document.querySelector("#start-game-btn");
@@ -34,11 +33,6 @@ const countdownTimer = document.querySelector("#countdown");
 const soundsPlayer = document.querySelectorAll(".sound");
 const pads = document.querySelectorAll(".cell");
 
-// Initial Settings
-score.textContent = "Score = 0";
-timer.textContent = "Time = 00:00:00";
-lives.textContent = "Lives = 5";
-
 let currentScore = 0;
 let currentLives = 5;
 let count = 3;
@@ -46,8 +40,13 @@ let gameArray = [];
 let userArray = [];
 let level = 1;
 let soundDelay = 1000;
+let timeLeft = 10;
+let gameTimerID = null;
 
-// Functions
+score.textContent = "Score = 0";
+timer.textContent = "Time = 00:00";
+lives.textContent = "Lives = 5";
+
 function validateUserInput() {
 	for (let i = 0; i < gameArray.length; i++) {
 		if (gameArray[i] !== userArray[i]) {
@@ -61,26 +60,37 @@ function handleSequenceCompletion() {
 	if (validateUserInput()) {
 		currentScore++;
 		score.textContent = "Score = " + currentScore;
+		nextSequence();
 	} else {
 		currentLives--;
 		lives.textContent = "Lives = " + currentLives;
 		if (currentLives <= 0) {
 			endGame();
+		} else {
+			nextSequence(); // start the next sequence even if the player got it wrong
 		}
 	}
-	nextSequence();
 }
 
 function endGame() {
+	stopGameTimer(); // Stop the timer
 	alert("Game Over! Your score is: " + currentScore);
 	location.reload();
 }
+function resetGameTimer() {
+	timeLeft = 10;
+}
+
+let isSequencePlaying = false;
 
 function playGameSequence() {
+	isSequencePlaying = true;
 	let index = 0;
 	const interval = setInterval(function () {
 		if (index === gameArray.length) {
 			clearInterval(interval);
+			isSequencePlaying = false;
+			setTimeout(startGameTimer, soundDelay);
 			return;
 		}
 
@@ -92,7 +102,6 @@ function playGameSequence() {
 
 			setTimeout(() => {
 				if (padIndex >= 0 && padIndex < pads.length) {
-					// Adding this check for safety
 					pads[padIndex].classList.remove("active");
 				}
 			}, soundDelay / 2);
@@ -113,6 +122,7 @@ function nextSequence() {
 	userArray = [];
 	gameArray = [];
 	createGameArray();
+	resetGameTimer();
 	playGameSequence();
 }
 
@@ -125,15 +135,39 @@ function initializeGame() {
 	lives.textContent = "Lives = " + currentLives;
 }
 
-function getUserArray(event) {
-	const currentPad = event.currentTarget;
-	const userClick = currentPad.innerText;
-	if (userArray.length < 7) {
-		userArray.push(+userClick);
+let gameTimer;
+let startTime;
+
+function startGameTimer() {
+	if (gameTimerID) {
+		clearInterval(gameTimerID); // Clear previous timer if any
 	}
-	if (userArray.length === 7) {
-		handleSequenceCompletion();
-	}
+
+	gameTimerID = setInterval(function () {
+		// Format time as MM:SS
+		const minutes = Math.floor(timeLeft / 60);
+		const seconds = timeLeft % 60;
+		timer.textContent = `Time = ${String(minutes).padStart(2, "0")}:${String(
+			seconds
+		).padStart(2, "0")}`;
+
+		if (timeLeft <= 0) {
+			clearInterval(gameTimerID); // Stop the timer
+			currentLives--;
+			lives.textContent = "Lives = " + currentLives;
+			if (currentLives <= 0) {
+				endGame();
+			} else {
+				nextSequence(); // start the next sequence even if time's up
+			}
+		} else {
+			timeLeft--;
+		}
+	}, 1000);
+}
+
+function stopGameTimer() {
+	clearInterval(gameTimer);
 }
 
 function startCountdownTimer() {
@@ -142,7 +176,7 @@ function startCountdownTimer() {
 			clearInterval(interval);
 			countdown.style.display = "none"; // Hide countdown
 			menu.style.display = "none"; // Hide menu
-			// Add logic to show the game area, if it's hidden
+			startGameTimer(); // Start game timer here
 			nextSequence();
 		} else {
 			countdownTimer.innerText = count;
@@ -151,15 +185,20 @@ function startCountdownTimer() {
 	}, 1000);
 }
 
-function setPadListener() {
-	pads.forEach(pad => {
-		pad.addEventListener("click", getUserArray);
-	});
+function resetGameTimer() {
+	timeLeft = 10;
+	if (gameTimerID) {
+		clearInterval(gameTimerID); // Clear previous timer if any
+	}
+	timer.textContent = `Time = ${String(Math.floor(timeLeft / 60)).padStart(
+		2,
+		"0"
+	)}:${String(timeLeft % 60).padStart(2, "0")}`;
 }
 
-// Event Listeners
 startGameBtn.addEventListener("click", () => {
 	countdown.style.display = "block";
+	initializeGame();
 	startCountdownTimer();
 });
 
@@ -181,8 +220,29 @@ window.addEventListener("load", () => {
 		});
 	});
 
-	// Preload sounds
 	soundsPlayer.forEach(sound => {
 		sound.load();
 	});
 });
+
+function startUserInputTimer() {
+	sequenceTimer = setTimeout(function () {
+		handleSequenceCompletion();
+	}, soundDelay * gameArray.length + 10000);
+}
+
+function handleUserInput() {
+	if (userArray.length === gameArray.length) {
+		clearTimeout(sequenceTimer);
+		handleSequenceCompletion();
+	}
+}
+
+function getUserArray(event) {
+	if (isSequencePlaying) return; // Do nothing if sequence is currently playing
+
+	const currentPad = event.currentTarget;
+	userClick = currentPad.innerText;
+	userArray.push(+userClick);
+	handleUserInput();
+}
