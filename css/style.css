@@ -122,6 +122,11 @@ main {
 	text-align: center;
 }
 
+.cell.active {
+	background-color: rgba(0, 255, 34, 0.212);
+	box-shadow: 0 0 10px rgba(0, 255, 34, 0.5);
+}
+
 .controllers {
 	display: flex;
 	justify-content: space-between;
