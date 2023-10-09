@@ -21,30 +21,26 @@ document
 
 // !!!!!!!Game code below!!!!!!!!!!
 
-const menu = document.querySelector("#menu");
-const startGameBtn = document.querySelector("#start-game-btn");
-const levelBtn = document.querySelector("#level");
+const levelSelector = document.getElementById("levelSelector");
+const startGameBtn = document.querySelector("#startGame");
 const resetBtn = document.querySelector("#reset");
 const score = document.querySelector("#score");
 const timer = document.querySelector("#timer");
 const lives = document.querySelector("#lives");
-const countdownTimer = document.querySelector("#countdown");
 const soundsPlayer = document.querySelectorAll(".sound");
 const pads = document.querySelectorAll(".cell");
 
 let currentScore = 0;
 let currentLives = 5;
-let count = 3;
+let timeLeft = 10;
 let gameArray = [];
 let userArray = [];
-let level = 1;
-let soundDelay = 1000;
-let timeLeft = 10;
 let gameTimerID = null;
 let sequenceTimer = null;
+let selectedLevel = parseInt(levelSelector.value, 10);
 
 score.textContent = "Score = 0";
-timer.textContent = "Time = 00:00";
+timer.textContent = "Time = 00:10";
 lives.textContent = "Lives = 5";
 
 function validateUserInput() {
@@ -56,94 +52,25 @@ function validateUserInput() {
 	return true;
 }
 
-function handleSequenceCompletion() {
-	console.log("Inside handleSequenceCompletion. Comparing sequences.");
-
-	console.log("Expected sequence:", gameArray);
-	console.log("User sequence:", userArray);
-
-	// Only check if the lengths are the same for safety reasons
-	if (userArray.length !== gameArray.length) {
-		console.log("User input is incomplete.");
-		return;
-	}
-
-	if (validateUserInput()) {
-		console.log("User input is correct. Proceeding to the next sequence.");
-		currentScore++;
-		currentLives++;
-		score.textContent = "Score = " + currentScore;
-		lives.textContent = "Lives = " + currentLives;
-
-		resetGameTimer();
-		nextSequence();
-	} else {
-		console.log(
-			"User input is incorrect. Reducing life and proceeding to the next sequence."
-		);
-		currentLives--;
-		lives.textContent = "Lives = " + currentLives;
-
-		if (currentLives <= 0) {
-			endGame();
-		} else {
-			resetGameTimer();
-			nextSequence();
-		}
-	}
-}
-
-function endGame() {
-	stopGameTimer(); // Stop the timer
-	alert("Game Over! Your score is: " + currentScore);
-	location.reload();
-}
-function resetGameTimer() {
-	timeLeft = 5;
-}
-
-let isSequencePlaying = false;
-
-function playGameSequence() {
-	isSequencePlaying = true;
-	let index = 0;
-	const interval = setInterval(function () {
-		if (index === gameArray.length) {
-			clearInterval(interval);
-			isSequencePlaying = false;
-			setTimeout(() => {
-				startGameTimer();
-				startUserInputTimer(); // Start the user input timer
-			}, soundDelay);
-			return;
-		}
-
-		let padIndex = gameArray[index] - 1;
-
-		if (padIndex >= 0 && padIndex < pads.length) {
-			pads[padIndex].classList.add("active");
-			soundsPlayer[padIndex].play();
-
-			setTimeout(() => {
-				if (padIndex >= 0 && padIndex < pads.length) {
-					pads[padIndex].classList.remove("active");
-				}
-			}, soundDelay / 2);
-		}
-
-		index++;
-	}, soundDelay);
+function initializeGame() {
+	currentScore = 0;
+	currentLives = 5;
+	selectedLevel = parseInt(levelSelector.value, 10);
+	score.textContent = "Score = " + currentScore;
+	lives.textContent = "Lives = " + currentLives;
+	nextSequence();
 }
 
 function createGameArray() {
-	for (let i = 0; i < 4; i++) {
+	let numTones = selectedLevel + 1;
+	gameArray = [];
+	for (let i = 0; i < numTones; i++) {
 		let soundNum = Math.trunc(Math.random() * 12) + 1;
 		gameArray.push(soundNum);
 	}
 }
 
 function nextSequence() {
-	if (sequenceTimer) clearTimeout(sequenceTimer); // Clear any lingering timers
 	userArray = [];
 	gameArray = [];
 	createGameArray();
@@ -151,39 +78,44 @@ function nextSequence() {
 	playGameSequence();
 }
 
-function initializeGame() {
-	currentScore = 0;
-	currentLives = 5;
-	level = 1;
-	soundDelay = 1000;
-	score.textContent = "Score = " + currentScore;
-	lives.textContent = "Lives = " + currentLives;
+function playGameSequence() {
+	let index = 0;
+	const interval = setInterval(function () {
+		if (index === gameArray.length) {
+			clearInterval(interval);
+			setTimeout(() => {
+				startGameTimer();
+				startUserInputTimer();
+			}, 1000);
+			return;
+		}
+		let padIndex = gameArray[index] - 1;
+		pads[padIndex].classList.add("active");
+		soundsPlayer[padIndex].play();
+
+		setTimeout(() => {
+			pads[padIndex].classList.remove("active");
+		}, 500);
+		index++;
+	}, 1000);
 }
 
-let gameTimer;
-let startTime;
-
 function startGameTimer() {
-	if (gameTimerID) {
-		clearInterval(gameTimerID); // Clear previous timer if any
-	}
-
+	clearInterval(gameTimerID);
 	gameTimerID = setInterval(function () {
-		// Format time as MM:SS
 		const minutes = Math.floor(timeLeft / 60);
 		const seconds = timeLeft % 60;
 		timer.textContent = `Time = ${String(minutes).padStart(2, "0")}:${String(
 			seconds
 		).padStart(2, "0")}`;
-
 		if (timeLeft <= 0) {
-			clearInterval(gameTimerID); // Stop the timer
+			clearInterval(gameTimerID);
 			currentLives--;
 			lives.textContent = "Lives = " + currentLives;
 			if (currentLives <= 0) {
 				endGame();
 			} else {
-				nextSequence(); // start the next sequence even if time's up
+				nextSequence();
 			}
 		} else {
 			timeLeft--;
@@ -191,33 +123,58 @@ function startGameTimer() {
 	}, 1000);
 }
 
-function stopGameTimer() {
-	clearInterval(gameTimer);
-}
-
 function resetGameTimer() {
-	timeLeft = 8;
-	if (gameTimerID) {
-		clearInterval(gameTimerID); // Clear previous timer if any
-	}
-	timer.textContent = `Time = ${String(Math.floor(timeLeft / 60)).padStart(
-		2,
-		"0"
-	)}:${String(timeLeft % 60).padStart(2, "0")}`;
+	timeLeft = 10; // Adjust as necessary based on game difficulty
+	timer.textContent = `Time = 00:${String(timeLeft).padStart(2, "0")}`;
 }
 
-startGameBtn.addEventListener("click", () => {
-	initializeGame();
-});
+function endGame() {
+	clearInterval(gameTimerID);
+	alert("Game Over! Your score is: " + currentScore);
+	location.reload();
+}
 
-resetBtn.addEventListener("click", () => {
-	userArray = [];
+function handleSequenceCompletion() {
+	if (validateUserInput()) {
+		currentScore += selectedLevel;
+		score.textContent = "Score = " + currentScore;
+	} else {
+		currentLives--;
+		lives.textContent = "Lives = " + currentLives;
+		if (currentLives <= 0) {
+			endGame();
+			return;
+		}
+	}
 	nextSequence();
+}
+
+function startUserInputTimer() {
+	sequenceTimer = setTimeout(
+		handleSequenceCompletion,
+		1000 * gameArray.length + 8000
+	);
+}
+
+function handleUserInput(event) {
+	const currentPad = event.currentTarget;
+	const userClick = currentPad.innerText;
+	userArray.push(+userClick);
+	if (userArray.length === gameArray.length) {
+		clearTimeout(sequenceTimer);
+		handleSequenceCompletion();
+	}
+}
+
+startGameBtn.addEventListener("click", initializeGame);
+resetBtn.addEventListener("click", nextSequence);
+
+pads.forEach(pad => {
+	pad.addEventListener("click", handleUserInput);
 });
 
-levelBtn.addEventListener("click", () => {
-	level++;
-	soundDelay *= 0.9;
+soundsPlayer.forEach(sound => {
+	sound.load();
 });
 
 window.addEventListener("load", () => {
@@ -227,75 +184,4 @@ window.addEventListener("load", () => {
 			soundsPlayer[index].play();
 		});
 	});
-
-	soundsPlayer.forEach(sound => {
-		sound.load();
-	});
 });
-
-function startUserInputTimer() {
-	sequenceTimer = setTimeout(function () {
-		console.log(
-			"startUserInputTimer's timeout is triggering handleSequenceCompletion."
-		);
-		handleSequenceCompletion();
-	}, soundDelay * gameArray.length + 8000);
-}
-
-function handleUserInput() {
-	console.log("Handling user input. Current clicked sequence:", userArray);
-	if (userArray.length === gameArray.length) {
-		console.log("User sequence completed. Calling handleSequenceCompletion.");
-		clearTimeout(sequenceTimer); // Clear the timer
-		console.log("handleUserInput is triggering handleSequenceCompletion.");
-		handleSequenceCompletion();
-	}
-}
-
-function getUserArray(event) {
-	if (userArray.length >= gameArray.length) {
-		console.log("User array is full. Ignoring extra clicks.");
-		return;
-	}
-
-	const currentPad = event.currentTarget;
-	const userClick = currentPad.innerText;
-	userArray.push(+userClick);
-
-	console.log("Clicked sequence after a pad click:", userArray);
-
-	handleUserInput();
-}
-function handleSequenceCompletion() {
-	console.log("Inside handleSequenceCompletion. Comparing sequences.");
-	console.log("Expected sequence:", gameArray);
-	console.log("User sequence:", userArray);
-
-	if (validateUserInput()) {
-		console.log(
-			"User input is correct. Adding to the score and proceeding to the next sequence."
-		);
-		currentScore++;
-		score.textContent = "Score = " + currentScore;
-
-		// Optionally, if you want to add a life upon a correct sequence, you can uncomment the line below
-		// currentLives++;
-	} else {
-		console.log(
-			"User input is incorrect. Reducing a life and proceeding to the next sequence."
-		);
-		currentLives--;
-		lives.textContent = "Lives = " + currentLives;
-
-		if (currentLives <= 0) {
-			endGame();
-			return;
-		}
-	}
-
-	nextSequence();
-}
-
-// pads.forEach((pad, index) => {
-// 	pad.addEventListener("click", getUserArray);
-// });
