@@ -44,6 +44,12 @@ score.textContent = "Score = 0";
 timer.textContent = "Time = 00:10";
 lives.textContent = "Lives = 5";
 
+levelSelector.addEventListener("change", function () {
+	selectedLevel = parseInt(levelSelector.value, 10);
+	// Reset other game states if necessary
+	resetValues();
+});
+
 function validateUserInput() {
 	for (let i = 0; i < gameArray.length; i++) {
 		if (gameArray[i] !== userArray[i]) {
@@ -63,7 +69,7 @@ function initializeGame() {
 }
 
 function createGameArray() {
-	let numTones = selectedLevel + 1;
+	let numTones = selectedLevel + 1; // 1 more than the selected level
 	gameArray = [];
 	for (let i = 0; i < numTones; i++) {
 		let soundNum = Math.trunc(Math.random() * 12) + 1;
@@ -81,22 +87,23 @@ function nextSequence() {
 
 function playGameSequence() {
 	let index = 0;
-	playSequenceInterval = setInterval(function () {
+	const interval = setInterval(function () {
 		if (index === gameArray.length) {
-			clearInterval(playSequenceInterval);
-			setTimeout(() => {
-				startGameTimer();
-				startUserInputTimer();
-			}, 1000);
+			clearInterval(interval);
+			startGameTimer(); // Start the game timer once the sequence has finished playing
 			return;
 		}
-		let padIndex = gameArray[index] - 1;
-		pads[padIndex].classList.add("active");
-		soundsPlayer[padIndex].play();
 
-		setTimeout(() => {
-			pads[padIndex].classList.remove("active");
-		}, 500);
+		let padIndex = gameArray[index] - 1;
+		if (padIndex >= 0 && padIndex < soundsPlayer.length) {
+			pads[padIndex].classList.add("active");
+			soundsPlayer[padIndex].play();
+
+			setTimeout(() => {
+				pads[padIndex].classList.remove("active");
+			}, 1000 / 2);
+		}
+
 		index++;
 	}, 1000);
 }
@@ -173,18 +180,24 @@ resetBtn.addEventListener("click", () => {
 });
 
 function resetValues() {
-	isSequencePlaying = false;
-	clearInterval(gameTimerID);
-	clearTimeout(sequenceTimer);
+	// Clear timers and intervals
 	clearInterval(playSequenceInterval);
+	clearTimeout(sequenceTimer);
+	if (gameTimerID) {
+		clearInterval(gameTimerID);
+	}
+
+	// Reset game variables
 	currentScore = 0;
 	currentLives = 5;
-	selectedLevel = parseInt(levelSelector.value, 10);
+	timeLeft = 10;
 	userArray = [];
 	gameArray = [];
+
+	// Update the display/UI
 	score.textContent = "Score = 0";
+	timer.textContent = "Time = 00:10";
 	lives.textContent = "Lives = 5";
-	resetGameTimer();
 }
 
 pads.forEach(pad => {
@@ -194,7 +207,10 @@ pads.forEach(pad => {
 soundsPlayer.forEach(sound => {
 	sound.load();
 });
-
+console.assert(
+	soundsPlayer.length === 12,
+	"There should be 12 sound elements!"
+);
 window.addEventListener("load", () => {
 	pads.forEach((pad, index) => {
 		pad.addEventListener("click", () => {
