@@ -29,6 +29,7 @@ const timer = document.querySelector("#timer");
 const lives = document.querySelector("#lives");
 const soundsPlayer = document.querySelectorAll(".sound");
 const pads = document.querySelectorAll(".cell");
+let playSequenceInterval;
 
 let currentScore = 0;
 let currentLives = 5;
@@ -80,9 +81,9 @@ function nextSequence() {
 
 function playGameSequence() {
 	let index = 0;
-	const interval = setInterval(function () {
+	playSequenceInterval = setInterval(function () {
 		if (index === gameArray.length) {
-			clearInterval(interval);
+			clearInterval(playSequenceInterval);
 			setTimeout(() => {
 				startGameTimer();
 				startUserInputTimer();
@@ -167,7 +168,24 @@ function handleUserInput(event) {
 }
 
 startGameBtn.addEventListener("click", initializeGame);
-resetBtn.addEventListener("click", nextSequence);
+resetBtn.addEventListener("click", () => {
+	resetValues();
+});
+
+function resetValues() {
+	isSequencePlaying = false;
+	clearInterval(gameTimerID);
+	clearTimeout(sequenceTimer);
+	clearInterval(playSequenceInterval);
+	currentScore = 0;
+	currentLives = 5;
+	selectedLevel = parseInt(levelSelector.value, 10);
+	userArray = [];
+	gameArray = [];
+	score.textContent = "Score = 0";
+	lives.textContent = "Lives = 5";
+	resetGameTimer();
+}
 
 pads.forEach(pad => {
 	pad.addEventListener("click", handleUserInput);
