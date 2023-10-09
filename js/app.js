@@ -22,7 +22,6 @@ document
 // !!!!!!!Game code below!!!!!!!!!!
 
 const menu = document.querySelector("#menu");
-const countdown = document.querySelector("#countdown-container");
 const startGameBtn = document.querySelector("#start-game-btn");
 const levelBtn = document.querySelector("#level");
 const resetBtn = document.querySelector("#reset");
@@ -34,7 +33,7 @@ const soundsPlayer = document.querySelectorAll(".sound");
 const pads = document.querySelectorAll(".cell");
 
 let currentScore = 0;
-let currentLives = 2;
+let currentLives = 5;
 let count = 3;
 let gameArray = [];
 let userArray = [];
@@ -137,7 +136,7 @@ function playGameSequence() {
 }
 
 function createGameArray() {
-	for (let i = 0; i < 2; i++) {
+	for (let i = 0; i < 4; i++) {
 		let soundNum = Math.trunc(Math.random() * 12) + 1;
 		gameArray.push(soundNum);
 	}
@@ -154,7 +153,7 @@ function nextSequence() {
 
 function initializeGame() {
 	currentScore = 0;
-	currentLives = 2;
+	currentLives = 5;
 	level = 1;
 	soundDelay = 1000;
 	score.textContent = "Score = " + currentScore;
@@ -196,23 +195,8 @@ function stopGameTimer() {
 	clearInterval(gameTimer);
 }
 
-function startCountdownTimer() {
-	const interval = setInterval(function () {
-		if (count === 0) {
-			clearInterval(interval);
-			countdown.style.display = "none"; // Hide countdown
-			menu.style.display = "none"; // Hide menu
-			startGameTimer(); // Start game timer here
-			nextSequence();
-		} else {
-			countdownTimer.innerText = count;
-			count--;
-		}
-	}, 1000);
-}
-
 function resetGameTimer() {
-	timeLeft = 10;
+	timeLeft = 8;
 	if (gameTimerID) {
 		clearInterval(gameTimerID); // Clear previous timer if any
 	}
@@ -223,9 +207,7 @@ function resetGameTimer() {
 }
 
 startGameBtn.addEventListener("click", () => {
-	countdown.style.display = "block";
 	initializeGame();
-	startCountdownTimer();
 });
 
 resetBtn.addEventListener("click", () => {
@@ -257,7 +239,7 @@ function startUserInputTimer() {
 			"startUserInputTimer's timeout is triggering handleSequenceCompletion."
 		);
 		handleSequenceCompletion();
-	}, soundDelay * gameArray.length + 10000);
+	}, soundDelay * gameArray.length + 8000);
 }
 
 function handleUserInput() {
@@ -314,6 +296,6 @@ function handleSequenceCompletion() {
 	nextSequence();
 }
 
-pads.forEach((pad, index) => {
-	pad.addEventListener("click", getUserArray);
-});
+// pads.forEach((pad, index) => {
+// 	pad.addEventListener("click", getUserArray);
+// });

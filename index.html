@@ -14,24 +14,10 @@
 </head>
 
 <body>
-    <div id="menu">
-        <button id="start-game-btn" class="btn-21">
-            <span>Start Game</span>
-        </button>
-        <button class="menu-instructions btn-21">
-            <span class="modal-open">Instructions</span>
-        </button>
-    </div>
-    <div id="countdown-container">
-        <div id="countdown"></div>
-    </div>
+
     <main>
         <h1 class="title">Find The Beat</h1>
         <section id="game-container">
-            <!-- <button class="Instructions">
-                <span>Start</span>
-            </button> -->
-
             <div class="info">
                 <span id="score">Score :</span>
                 <span id="timer">Timer :</span>
@@ -93,9 +79,17 @@
                 </div>
             </div>
             <div class="btns">
-                <button id="level" class="btn-21">
-                    <span>Levels</span>
-                </button>
+                <select id="levelSelector">
+                    <option value="1">Level 1: 2 tones - 1 point</option>
+                    <option value="2">Level 2: 3 tones - 2 points</option>
+                    <option value="3">Level 3: 4 tones - 3 points</option>
+                    <option value="1">Level 4: 5 tones - 4 point</option>
+                    <option value="2">Level 5: 6 tones - 5 points</option>
+                    <option value="3">Level 6: 7 tones - 6 points</option>
+
+                </select>
+                <button id="startGame" class="btn-21">Start Game</button>
+
                 <span class="modal-open">Instructions</span>
                 <div class="modal-wrapper">
                     <div class="modal">
@@ -103,13 +97,13 @@
                         <ul>
                             <li>Press Start Game to begin.</li>
                             <li>There will be a random 7-sequence beat scattered around the board's instrumments.</li>
-                            <li>You will then be given 3 seconds to memorise the  beat/locations of the sounds.</li>
+                            <li>You will then be given 3 seconds to memorise the beat/locations of the sounds.</li>
                             <li>Select all the correct instrumments in the correct order to earn 1 point.</li>
                             <li>If you fail to select atleast 1 sound you will lose 1 Life.</li>
-                            <li>If any beat is missed you will lose 1 Life.</li> 
-                            <li>If the sequence is not correct you will lose 1 Life.</li> 
+                            <li>If any beat is missed you will lose 1 Life.</li>
+                            <li>If the sequence is not correct you will lose 1 Life.</li>
                             <li>You will then be given a new sequance in the next round.</li>
-                            
+
                         </ul>
                         <i class="fa-solid fa-xmark modal-close"></i>
                     </div>
