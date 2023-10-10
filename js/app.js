@@ -19,6 +19,19 @@ document
 	.querySelector(".date")
 	.appendChild(document.createTextNode(new Date().getFullYear()));
 
+// Touch hover for buttons
+const cells = document.querySelectorAll(".cell");
+
+cells.forEach(cell => {
+	cell.addEventListener("touchstart", () => {
+		cell.classList.add("touched");
+	});
+
+	cell.addEventListener("touchend", () => {
+		cell.classList.remove("touched");
+	});
+});
+
 // !!!!!!!Game code below!!!!!!!!!!
 
 const levelSelector = document.getElementById("levelSelector");
