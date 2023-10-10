@@ -113,12 +113,11 @@ main {
 	background-color: rgba(0, 255, 34, 0.212);
 	box-shadow: 0 0 10px rgba(0, 255, 34, 0.5);
 }
-
-.cell:hover,
-.cell.touched {
-	/* added .cell.touched */
-	background-color: var(--main);
-	color: black;
+@media (hover: hover) {
+	.cell:hover {
+		background-color: var(--main);
+		color: black;
+	}
 }
 
 .controllers {
