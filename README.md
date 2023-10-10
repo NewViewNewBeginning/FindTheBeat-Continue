@@ -1,65 +1,63 @@
-# _PROJECT NAME: Find The Beat_ : _Hackathon Nov 2022_
+# Find The Beat
+
+**Project by: Michal Krawczyk**
+
+Find The Beat is a dynamic music-based memory pattern game, designed and developed by Michal Krawczyk. The project was initially conceptualized for a hackathon held in November 2022. Although it didn't gain recognition during the hackathon, the idea was revisited, leading to a full-fledged game that challenges both memory and rhythm skills.
 
 ### Deployed link
 
-[Click here to play!](https://newviewnewbeginning.github.io/FindTheBeat-Continue/)
+Experience the game for yourself! [Click here to play!](https://newviewnewbeginning.github.io/FindTheBeat-Continue/)
 
-## How to play
+## Gameplay Instructions
 
-- There will be a random 7-sequence beat scattered around the board's instrumments.
-- You will then be given 3 seconds to memorise the beat/locations of the sounds.
-- Select all the correct instrumments in the correct order to earn 1 point.
-- If you fail to select atleast 1 sound you will lose 1 Life.
-- If any beat is missed you will lose 1 Life.
-- If the sequence is not correct you will lose 1 Life.
-- You will then be given a new sequance in the next round.
+1. **Start the Game:** Click on the Start button.
+2. **Choose Your Level:** Depending on your confidence, select a level. This will determine the sequence length, which can be anything from 2 to 7 tones.
+3. **Memory Challenge:** A unique sequence corresponding to the selected level will play. Make sure to memorize it!
+4. **Recreate the Sequence:** After the sequence has played out, you'll get 10 seconds to reproduce it correctly.
+5. **Score Points:** Successfully reproducing the sequence rewards you with points. The points you earn are proportional to the level you chose.
+6. **Lives & Challenges:** Be cautious! Failing to recreate the sequence, missing a beat, or running out of time results in the loss of a life. Keep progressing through the levels and face new sequences to test your memory and rhythm skills to the fullest.
 
 ## Project Overview
 
-Find the beat is a music-based memory pattern game.  
-The application was made by Monika, Michal, Bogdan, and Sador.
-
-- When start the game is pressed player is introduced to 3 seconds loading stage until the game board is shown.
-  After that what is supposed to happen is, a 7-beat pattern scattered around the board of instruments.
-  If the user fails to register at least 1 beat the program should remove 1 life
-  When the player guessed all beats they will then move on to the next sequence.
-- There is a levels button option - this should increase the number of beats to a higher number to memorize.
-- The reset button will reset the sequence mid-game if user chooses so.
+Designed from scratch, "Find the Beat" offers a blend of music and memory to deliver a captivating experience. Every element, from the layout, design, to the backend, has been crafted by Michal Krawczyk.
 
 ## Wireframes
 
-Wireframe has been designed based on on high level functionality of the music game, some of this might not be displayed in the final product of the game memory board.
+The wireframes provide a peek into the game's high-level functionality. Some features from the wireframes might not have transitioned into the final game memory board.
 
-<details><summary>Desktop</summary>
+<details><summary>Desktop View Wireframes</summary>
 
-![WireframesStart](assets/images/startgame.png)
-![Wireframesgame](assets/images/wireframes-main-game.png)
+- **Start Game View**
+  ![WireframesStart](assets/images/startgame.png)
 
-- Final Result
-![Pcview](assets/images/pcview.png)
-</details>
+- **Main Game View**
+  ![Wireframesgame](assets/images/wireframes-main-game.png)
 
-<details><summary>Mobile</summary>
-
-![Wireframesmobile](assets/images/mobile.png)
-
-- Final result
-
-![mobileview](assets/images/mobilescrn.png)
+- **Final Desktop Version**
+  ![Pcview](assets/images/pcview.png)
 
 </details>
 
-## Flowchart of game play
+<details><summary>Mobile View Wireframes</summary>
 
+- **Mobile Version Wireframe**
+  ![Wireframesmobile](assets/images/mobile.png)
+
+- **Final Mobile Version**
+  ![mobileview](assets/images/mobilescrn.png)
+
+</details>
+
+## Flowchart of Game Play
+
+Get a visual representation of the gameplay flow:
 ![Flowchart](assets/images/flowchart.png)
 
 ## Existing Features
 
-- **The landing page image**
+- **The Landing Page Image:** Sets the tone of the game and welcomes players with an engaging visual.
 
-## Credits
+---
 
-- Monika
-- Michal
-- Bogdan
-- Sador
+**Credits:**
+All aspects of this project, including design, layout, coding, and implementation, are credited to Michal Krawczyk.
